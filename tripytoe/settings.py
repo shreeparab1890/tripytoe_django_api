@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-sj8%em4xoem05rw8&*p1eq2k3$9jl6+%%ds2lnoi^*$*1!o@or
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['tripytoe-django-api.onrender.com']
+ALLOWED_HOSTS = ['tripytoe-django-api-8z1w.onrender.com']
 #ALLOWED_HOSTS = ['']
 
 
