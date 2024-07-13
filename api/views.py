@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+GEMINI_API_KEY = os.getenv('GOOGLE_API_KEY')
 
 def api_home(req, *args, **kwargs):
     return JsonResponse({"message": "This is my api Home response."})
@@ -18,6 +18,7 @@ def api_home(req, *args, **kwargs):
 @csrf_exempt
 @require_http_methods(["GET"])
 def generateItinerary(req, *args, **kwargs):
+    genai.configure(api_key=GEMINI_API_KEY)
     generation_config = {
         "temperature": 1,
         "top_p": 0.95,
