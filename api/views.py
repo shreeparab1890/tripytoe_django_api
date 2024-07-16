@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-GEMINI_API_KEY = os.getenv('GOOGLE_API_KEY')
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
 def api_home(req, *args, **kwargs):
     return JsonResponse({"message": "This is my api Home response."})
@@ -18,7 +18,7 @@ def api_home(req, *args, **kwargs):
 @csrf_exempt
 @require_http_methods(["GET"])
 def generateItinerary(req, *args, **kwargs):
-    genai.configure(api_key=GEMINI_API_KEY)
+    genai.configure(api_key=GOOGLE_API_KEY)
     generation_config = {
         "temperature": 1,
         "top_p": 0.95,
@@ -126,7 +126,7 @@ def post_generateItinerary(req, *args, **kwargs):
     delta = end_date - start_date
     num_of_days = delta.days
 
-    genai.configure(api_key=GEMINI_API_KEY)
+    genai.configure(api_key=GOOGLE_API_KEY)
 
     generation_config = {
         "temperature": 1,
@@ -213,7 +213,73 @@ def post_generateItinerary(req, *args, **kwargs):
     except Exception as e:
         return JsonResponse({"res": "", "msg": f"API Error: {str(e)}"}, status=500)
 
-   
+def json_to_text(data, indent=0):
+    text = ''
+    for key, value in data.items():
+        if isinstance(value, dict):
+            text += ' ' * indent + f"{key}:\n"
+            text += json_to_text(value, indent + 4)
+        elif isinstance(value, list):
+            text += ' ' * indent + f"{key}:\n"
+            for item in value:
+                text += ' ' * (indent + 4) + f"- {item}\n"
+        else:
+            text += ' ' * indent + f"{key}: {value}\n"
+    return text
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def post_generateDayItinerary(req, *args, **kwargs):
+    data = json.loads(req.body)
+    old_itinerary = data.get("old_itinerary")
+    old_itinerary_text = json_to_text(old_itinerary)
+    genai.configure(api_key=GOOGLE_API_KEY)
+
+    generation_config = {
+        "temperature": 1,
+        "top_p": 0.95,
+        "top_k": 64,
+        "max_output_tokens": 8192,
+        "response_mime_type": "text/plain",
+    }
+
+    model = genai.GenerativeModel(
+        model_name="gemini-1.5-flash",
+        generation_config=generation_config,
+    )
+
+    chat_session = model.start_chat(
+            history=[
+                {
+                "role": "model",
+                "parts": [ old_itinerary_text ],
+                },
+                {
+                "role": "user",
+                "parts": [
+                    "replace or regenerate the travel itinerary generated for day 1 with different activities for the day, w.r.t. the whole travel itinerary and activities not repeated in the whole itinerary. Only generate a new whole json. no other text muxt be generated",
+                ],
+                },
+                ])
+    try:
+        response = chat_session.send_message("generate")
+        if response:
+            response_text = response.text
+            print("from django.utils.translation import ungettext")
+            print(response_text)
+            response_text = response_text.replace('```', '')
+            response_text = response_text.replace('json', '')
+            response_data = json.loads(response_text)
+            return JsonResponse({"res": response_data, "msg": "API Success"}, status=200)
+        else:
+            return JsonResponse({"res": "", "msg": "API Failed"}, status=424)
+    except Exception as e:
+        return JsonResponse({"res": "", "msg": f"API Error: {str(e)}"}, status=500)
+
+
 
     
 
+
+
+        
