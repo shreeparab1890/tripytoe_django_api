@@ -265,7 +265,6 @@ def post_generateDayItinerary(req, *args, **kwargs):
         response = chat_session.send_message("generate")
         if response:
             response_text = response.text
-            print("from django.utils.translation import ungettext")
             print(response_text)
             response_text = response_text.replace('```', '')
             response_text = response_text.replace('json', '')
