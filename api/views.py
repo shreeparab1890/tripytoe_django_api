@@ -272,7 +272,7 @@ def post_generateDayItinerary(req, *args, **kwargs):
         response = chat_session.send_message("generate")
         if response:
             response_text = response.text
-            print(response_text)
+            print("Response text"+response_text)
             response_text = response_text.replace('```', '')
             response_text = response_text.replace('json', '')
             response_data = json.loads(response_text)
