@@ -126,6 +126,7 @@ def post_generateItinerary(req, *args, **kwargs):
     delta = end_date - start_date
     num_of_days = delta.days
 
+    
     genai.configure(api_key=GOOGLE_API_KEY)
 
     generation_config = {
@@ -168,23 +169,28 @@ def post_generateItinerary(req, *args, **kwargs):
                                     "activities": [
                                         {{
                                             "activity_time": "Breakfast",
-                                            "activity": "" // The real activity in the breakfast can be added here
+                                            "activity": "" // The real activity in the breakfast can be added here,
+                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }},
                                         {{
                                             "activity_time": "Morning",
-                                            "activity": "" // The real activity in the morning can be added here
+                                            "activity": "" // The real activity in the morning can be added here,
+                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }},
                                         {{
                                             "activity_time": "Lunch",
-                                            "activity": "" // The real activity in the lunch can be added here
+                                            "activity": "" // The real activity in the lunch can be added here,
+                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }},
                                         {{
                                             "activity_time": "Evening Activity",
-                                            "activity": "" // The real activity in the evening activity can be added here
+                                            "activity": "" // The real activity in the evening activity can be added here,
+                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }},
                                         {{
                                             "activity_time": "Night",
-                                            "activity": "" // The real activity in the night can be added here
+                                            "activity": "" // The real activity in the night can be added here,
+                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }}
                                     ],
                                     "day_name_entity": [
@@ -232,6 +238,7 @@ def json_to_text(data, indent=0):
 def post_generateDayItinerary(req, *args, **kwargs):
     data = json.loads(req.body)
     old_itinerary = data.get("old_itinerary")
+    day_no = data.get("day_no")
     old_itinerary_text = json_to_text(old_itinerary)
     genai.configure(api_key=GOOGLE_API_KEY)
 
@@ -257,7 +264,7 @@ def post_generateDayItinerary(req, *args, **kwargs):
                 {
                 "role": "user",
                 "parts": [
-                    "replace or regenerate the travel itinerary generated for day 1 with different activities for the day, w.r.t. the whole travel itinerary and activities not repeated in the whole itinerary. Only generate a new whole json. no other text muxt be generated",
+                    f"replace or regenerate the travel itinerary generated for day {day_no} with different activities for the day, w.r.t. the whole travel itinerary and activities not repeated in the whole itinerary. Only generate a new whole json. no other text muxt be generated",
                 ],
                 },
                 ])
