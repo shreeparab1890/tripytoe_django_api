@@ -170,27 +170,27 @@ def post_generateItinerary(req, *args, **kwargs):
                                         {{
                                             "activity_time": "Breakfast",
                                             "activity": "" // The real activity in the breakfast can be added here,
-                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
+                                            "other_options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }},
                                         {{
                                             "activity_time": "Morning",
                                             "activity": "" // The real activity in the morning can be added here,
-                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
+                                            "other_options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }},
                                         {{
                                             "activity_time": "Lunch",
                                             "activity": "" // The real activity in the lunch can be added here,
-                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
+                                            "other_options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }},
                                         {{
                                             "activity_time": "Evening Activity",
                                             "activity": "" // The real activity in the evening activity can be added here,
-                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
+                                            "other_options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }},
                                         {{
                                             "activity_time": "Night",
                                             "activity": "" // The real activity in the night can be added here,
-                                            "other options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
+                                            "other_options":["opt1","opt2","opt3","opt4","opt5"] // generate options for the activity. the options should not match any other activity in the whole itinerary.
                                         }}
                                     ],
                                     "day_name_entity": [
