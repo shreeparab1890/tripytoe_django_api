@@ -239,7 +239,8 @@ def post_generateDayItinerary(req, *args, **kwargs):
     data = json.loads(req.body)
     old_itinerary = data.get("old_itinerary")
     day_no = data.get("day_no")
-    old_itinerary_text = json_to_text(old_itinerary)
+    old_itinerary_text = json.dumps(old_itinerary)
+    #old_itinerary_text = json_to_text(old_itinerary)
     genai.configure(api_key=GOOGLE_API_KEY)
 
     generation_config = {
@@ -264,7 +265,7 @@ def post_generateDayItinerary(req, *args, **kwargs):
                 {
                 "role": "user",
                 "parts": [
-                    f"replace or regenerate the travel itinerary generated for day {day_no} with different activities for the day, w.r.t. the whole travel itinerary and activities not repeated in the whole itinerary. Only generate a new whole json. no other text muxt be generated",
+                    f"replace the travel itinerary generated for day {day_no} with different activities for the day, Also consider the whole travel itinerary and activities and make sure the replaced activities are not repeated in the whole itinerary. Just replace the days itinerary and give the output as the given format.",
                 ],
                 },
                 ])
@@ -272,7 +273,6 @@ def post_generateDayItinerary(req, *args, **kwargs):
         response = chat_session.send_message("generate")
         if response:
             response_text = response.text
-            print("Response text"+response_text)
             response_text = response_text.replace('```', '')
             response_text = response_text.replace('json', '')
             response_data = json.loads(response_text)
